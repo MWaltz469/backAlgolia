@@ -1,0 +1,13 @@
+{
+  "name": "backalgolia",
+  "version": "1.0.0",
+  "description": "a simple backend implementation of Algolia using express.js and instantsearch.js proxying to backend.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
