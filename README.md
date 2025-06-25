@@ -22,7 +22,8 @@ This project demonstrates an Algolia search implementation with an Express.js ba
    ```bash
    node server/index.js
    ```
-5. Serve the `client/` folder (for example with `npx serve client`). The frontend proxies search requests to the backend at `/search` and `/facet`.
+   The Express server now also serves the static frontend.
+5. Open `http://localhost:3000` in your browser. The frontend proxies search requests to the backend at `/search` and `/facet`.
 
 ## Notes
 

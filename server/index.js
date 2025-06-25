@@ -1,12 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const algoliasearch = require('algoliasearch');
+const path = require('path');
 
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '..', 'client')));
 
 const appId = process.env.ALGOLIA_APP_ID;
 const apiKey = process.env.ALGOLIA_API_KEY;
@@ -18,6 +20,10 @@ if (!appId || !apiKey || !indexName) {
 }
 
 const client = algoliasearch(appId, apiKey);
+client.initIndex(indexName)
+  .search('', { hitsPerPage: 1 })
+  .then(() => console.log('Algolia connectivity verified'))
+  .catch(err => console.error('Algolia connection error:', err.message));
 
 app.post('/search', async (req, res) => {
   const requests = req.body.requests || [];
