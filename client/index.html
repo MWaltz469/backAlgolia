@@ -4,12 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Algolia Search</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8/themes/algolia-min.css" />
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .hit img { max-width: 100px; }
-    .hit { display: flex; gap: 1rem; margin-bottom: 1rem; }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.5.1/themes/satellite-min.css" />
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
   <div id="searchbox"></div>
@@ -19,82 +15,7 @@
   <div id="pagination"></div>
 
   <script src="env.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
-  <script>
-    let userIP = '';
-    // optional fetch to get client IP
-    fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
-      .then(data => { userIP = data.ip; })
-      .catch(() => {});
-
-    const searchClient = {
-      async search(requests) {
-        const response = await fetch('/search', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Forwarded-For': userIP
-          },
-          body: JSON.stringify({ requests })
-        });
-        return response.json();
-      },
-      async searchForFacetValues(requests) {
-        const response = await fetch('/facet', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Forwarded-For': userIP
-          },
-          body: JSON.stringify({ requests })
-        });
-        return response.json();
-      }
-    };
-
-    const INDEX_NAME = (window.ENV && window.ENV.INDEX_NAME) || 'products';
-    const REPLICA_ASC = (window.ENV && window.ENV.REPLICA_ASC) || 'products_price_asc';
-    const REPLICA_DESC = (window.ENV && window.ENV.REPLICA_DESC) || 'products_price_desc';
-
-    const search = instantsearch({
-      indexName: INDEX_NAME,
-      searchClient
-    });
-
-    search.addWidgets([
-      instantsearch.widgets.searchBox({
-        container: '#searchbox',
-        searchAsYouType: true
-      }),
-      instantsearch.widgets.sortBy({
-        container: '#sort-by',
-        items: [
-          { label: 'Price low to high', value: REPLICA_ASC },
-          { label: 'Price high to low', value: REPLICA_DESC }
-        ]
-      }),
-      instantsearch.widgets.refinementList({
-        container: '#brand-list',
-        attribute: 'brand'
-      }),
-      instantsearch.widgets.hits({
-        container: '#hits',
-        templates: {
-          item: (hit) => `
-            <div class="hit">
-              <img src="${hit.image}" alt="${hit.name}" />
-              <div>
-                <div>${hit.name}</div>
-                <div>$${hit.price}</div>
-              </div>
-            </div>`
-        }
-      }),
-      instantsearch.widgets.pagination({ container: '#pagination' })
-    ]);
-
-    search.start();
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.59.0"></script>
+  <script src="assets/main.js"></script>
 </body>
 </html>
