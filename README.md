@@ -9,6 +9,7 @@ This project demonstrates an Algolia search implementation with an Express.js ba
 - Hits show name, image and price
 - Proxy search requests through the Express.js server
 - Frontend sends `X-Forwarded-For` header so the backend can forward the user IP to Algolia
+- Request and Algolia latency traced with OpenTelemetry and Honeycomb
 
 ## Setup
 
@@ -24,6 +25,8 @@ This project demonstrates an Algolia search implementation with an Express.js ba
    ```
    The Express server now also serves the static frontend.
 5. Open `http://localhost:3000` in your browser. The frontend proxies search requests to the backend at `/search` and `/facet`.
+   Traces are sent to Honeycomb if `HONEYCOMB_API_KEY` and `HONEYCOMB_DATASET`
+   are set in your `.env` file.
 
 ## Notes
 
