@@ -18,6 +18,7 @@
   <div id="hits"></div>
   <div id="pagination"></div>
 
+  <script src="env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
   <script>
     let userIP = '';
@@ -52,8 +53,12 @@
       }
     };
 
+    const INDEX_NAME = (window.ENV && window.ENV.INDEX_NAME) || 'products';
+    const REPLICA_ASC = (window.ENV && window.ENV.REPLICA_ASC) || 'products_price_asc';
+    const REPLICA_DESC = (window.ENV && window.ENV.REPLICA_DESC) || 'products_price_desc';
+
     const search = instantsearch({
-      indexName: 'products',
+      indexName: INDEX_NAME,
       searchClient
     });
 
@@ -65,8 +70,8 @@
       instantsearch.widgets.sortBy({
         container: '#sort-by',
         items: [
-          { label: 'Price low to high', value: 'products_price_asc' },
-          { label: 'Price high to low', value: 'products_price_desc' }
+          { label: 'Price low to high', value: REPLICA_ASC },
+          { label: 'Price high to low', value: REPLICA_DESC }
         ]
       }),
       instantsearch.widgets.refinementList({

@@ -13,18 +13,20 @@ This project demonstrates an Algolia search implementation with an Express.js ba
 ## Setup
 
 1. Copy `.env.example` to `.env` and fill in your Algolia credentials.
-2. Install dependencies (requires internet access):
+2. Copy `client/env.example.js` to `client/env.js` and adjust the index name and replicas if needed.
+3. Install dependencies (requires internet access):
    ```bash
    npm install
    ```
-3. Start the server:
+4. Start the server:
    ```bash
    node server/index.js
    ```
-4. Serve the `client/` folder (for example with `npx serve client`). The frontend proxies search requests to the backend at `/search` and `/facet`.
+5. Serve the `client/` folder (for example with `npx serve client`). The frontend proxies search requests to the backend at `/search` and `/facet`.
 
 ## Notes
 
 - Two Algolia replica indices named `products_price_asc` and `products_price_desc` are expected for sorting by price.
 - The example fetches the client IP via `https://api.ipify.org`; adjust as needed or remove if running offline.
+- Frontend configuration is read from `client/env.js` so index names can be changed without modifying `index.html`.
 
