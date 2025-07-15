@@ -5,9 +5,9 @@ const express = require('express');
 const cors = require('cors');
 const algoliasearch = require('algoliasearch');
 const path = require('path');
-const botAuth  = require('./authBotMiddleware');
 // The OpenTelemetry API is used directly for manual spans
-const { trace } = require('@opentelemetry/api');
+const { trace, context } = require('@opentelemetry/api');
+const hitTable = new Map();   // keeps per-client counters
 
 require('dotenv').config();
 
@@ -24,21 +24,22 @@ function hrToMs(hr) {
   return hr[0] * 1000 + hr[1] / 1e6;
 }
 
-// Middleware to record the total time spent handling each request
+
 app.use((req, res, next) => {
-  const span = tracer.startSpan('http_request', {
-    attributes: {
-      'http.method': req.method,
-      'http.target': req.originalUrl,
-    },
+  tracer.startActiveSpan('botAuth', span => {
+    const key  = req.headers['x-user-token'] || req.ip;
+    const hits = hitTable.get(key) ?? 0;
+    hitTable.set(key, hits + 1);
+
+    const delay = Math.min(20 * hits, 450);
+    span.setAttribute('auth.hit_count', hits);
+    span.setAttribute('auth.delay_ms', delay);
+
+    setTimeout(() => {
+      span.end();
+      next();
+    }, delay);
   });
-  const start = process.hrtime();
-  res.on('finish', () => {
-    span.setAttribute('http.status_code', res.statusCode);
-    span.setAttribute('request.duration_ms', hrToMs(process.hrtime(start)));
-    span.end();
-  });
-  next();
 });
 
 const appId = process.env.ALGOLIA_APP_ID;
@@ -57,7 +58,7 @@ client.initIndex(indexName)
   .catch(err => console.error('Algolia connection error:', err.message));
 
 // Wrap search endpoint in a span to capture Algolia request latency
-app.post('/search', botAuth, async (req, res) => {
+app.post('/search', async (req, res) => {
   const requests = req.body.requests || [];
   const userIp = req.headers['x-forwarded-for'] || req.ip;
 

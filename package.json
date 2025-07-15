@@ -17,8 +17,8 @@
     "algoliasearch": "^4.17.2",
     "dotenv": "^16.0.3",
     "@honeycombio/opentelemetry-node": "^0.6",
-    "@opentelemetry/sdk-node": "^1",
-    "@opentelemetry/exporter-trace-otlp-http": "^1",
+    "@opentelemetry/sdk-node": "^0.202.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.202.0",
     "@opentelemetry/auto-instrumentations-node": "~0.43"
   }
 }
