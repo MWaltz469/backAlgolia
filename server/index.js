@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const algoliasearch = require('algoliasearch');
 const path = require('path');
+const botAuth  = require('./authBotMiddleware');
 // The OpenTelemetry API is used directly for manual spans
 const { trace } = require('@opentelemetry/api');
 
@@ -56,7 +57,7 @@ client.initIndex(indexName)
   .catch(err => console.error('Algolia connection error:', err.message));
 
 // Wrap search endpoint in a span to capture Algolia request latency
-app.post('/search', async (req, res) => {
+app.post('/search', botAuth, async (req, res) => {
   const requests = req.body.requests || [];
   const userIp = req.headers['x-forwarded-for'] || req.ip;
 
