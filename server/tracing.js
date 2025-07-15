@@ -1,5 +1,5 @@
 // Basic Honeycomb/OpenTelemetry setup used by the server
-require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+require('dotenv').config();
 const { NodeSDK } = require('@opentelemetry/sdk-node');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');

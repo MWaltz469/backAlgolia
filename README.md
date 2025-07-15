@@ -13,7 +13,7 @@ This project demonstrates an Algolia search implementation with an Express.js ba
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and fill in your Algolia credentials.
+1. Copy `.env.sample` to `.env` and fill in your Algolia credentials.
 2. Copy `client/env.example.js` to `client/env.js` and adjust the index name and replicas if needed.
 3. Install dependencies (requires internet access):
    ```bash
